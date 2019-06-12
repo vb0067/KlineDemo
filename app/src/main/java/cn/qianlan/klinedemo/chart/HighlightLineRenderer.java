@@ -96,8 +96,8 @@ public class HighlightLineRenderer extends LineChartRenderer {
             if (!TextUtils.isEmpty(textX)) {//绘制x的值
                 //先绘制文字框
                 mHighlightPaint.setStyle(Paint.Style.STROKE);
-                int width = Utils.calcTextWidth(mHighlightPaint, textX);
-                int height = Utils.calcTextHeight(mHighlightPaint, textX);
+                int width = 172;
+                int height = 72;
                 float left = Math.max(xMin, xp - width / 2F - halfPaddingVer);//考虑间隙
                 float right = left + width + halfPaddingHor * 2;
                 if (right > xMax) {
@@ -114,7 +114,7 @@ public class HighlightLineRenderer extends LineChartRenderer {
                 c.drawText(textX, left + halfPaddingHor, baseY, mHighlightPaint);
             }
             //绘制竖线
-            c.drawLine(xp, textXHeight, xp, mChart.getHeight(), mHighlightPaint);
+            c.drawLine(xp, textXHeight, xp, mChart.getYChartMax(), mHighlightPaint);
 
             //判断是否画横线
             float y = high.getDrawY();

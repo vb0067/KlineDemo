@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -63,21 +64,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TabLayout.OnTabSelectedListener, OkHttpUtil.OnDataListener, CoupleChartGestureListener.OnEdgeListener,
         CoupleChartValueSelectedListener.ValueSelectedListener, ChartFingerTouchListener.HighlightListener {
 
-    private ImageView ivBack;
-    private ImageView ivOri;
+//    private ImageView ivBack;
+//    private ImageView ivOri;
 
-    private TabLayout tabLayout;
-    private ConstraintLayout clHl;
+//    private TabLayout tabLayout;
+//    private ConstraintLayout clHl;
 
-    private TextView tvOpen;
-    private TextView tvClose;
-    private TextView tvHigh;
-    private TextView tvLow;
-    private TextView tvVol;
-    private TextView tvLine;
+//    private TextView tvOpen;
+//    private TextView tvClose;
+//    private TextView tvHigh;
+//    private TextView tvLow;
+//    private TextView tvVol;
+//    private TextView tvLine;
 
     private CombinedChart cc;
-    private BarChart bc;
+//    private BarChart bc;
 
     private boolean toLeft;
     private int range = 52;//一屏显示Candle个数
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LineDataSet lineSetMin;//分时线
     private LineDataSet lineSet5;
     private LineDataSet lineSet10;
-    private CandleDataSet candleSet;
+//    private CandleDataSet candleSet;
     private CombinedData combinedData;
     private BarDataSet barSet;
     private final float barOffset = -0.5F;//BarChart偏移量
@@ -122,31 +123,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initView() {
-        ivBack = findViewById(R.id.iv_klBack);
-        ivOri = findViewById(R.id.iv_klOrientation);
+//        ivBack = findViewById(R.id.iv_klBack);
+//        ivOri = findViewById(R.id.iv_klOrientation);
 
-        tabLayout = findViewById(R.id.tl_kl);
-        clHl = findViewById(R.id.cl_klHighlight);
-
-        tvOpen = findViewById(R.id.tv_klOpen);
-        tvClose = findViewById(R.id.tv_klClose);
-        tvHigh = findViewById(R.id.tv_klHigh);
-        tvLow = findViewById(R.id.tv_klLow);
-        tvVol = findViewById(R.id.tv_klVol);
-        tvLine = findViewById(R.id.tv_klLineInfo);
+//        tabLayout = findViewById(R.id.tl_kl);
+//        clHl = findViewById(R.id.cl_klHighlight);
+//
+//        tvOpen = findViewById(R.id.tv_klOpen);
+//        tvClose = findViewById(R.id.tv_klClose);
+//        tvHigh = findViewById(R.id.tv_klHigh);
+//        tvLow = findViewById(R.id.tv_klLow);
+//        tvVol = findViewById(R.id.tv_klVol);
+//        tvLine = findViewById(R.id.tv_klLineInfo);
 
         cc = findViewById(R.id.cc_kl);
-        bc = findViewById(R.id.bc_kl);
+//        bc = findViewById(R.id.bc_kl);
+//        bc.setVisibility(View.GONE);
 
-        ivBack.setOnClickListener(this);
-        ivOri.setOnClickListener(this);
+//        ivBack.setOnClickListener(this);
+//        ivOri.setOnClickListener(this);
 
-        for (int i = 0; i < KLINE.length; i++) {
-            TextView v = (TextView) LayoutInflater.from(this).inflate(R.layout.item_tab_kline, null);
-            v.setText(KLINE[i]);
-            tabLayout.addTab(tabLayout.newTab().setCustomView(v), i == index);
-        }
-        tabLayout.addOnTabSelectedListener(this);
+//        for (int i = 0; i < KLINE.length; i++) {
+//            TextView v = (TextView) LayoutInflater.from(this).inflate(R.layout.item_tab_kline, null);
+//            v.setText(KLINE[i]);
+//            tabLayout.addTab(tabLayout.newTab().setCustomView(v), i == index);
+//        }
+//        tabLayout.addOnTabSelectedListener(this);
 
         initChart();
     }
@@ -156,13 +158,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int gray = getColorById(R.color.gray8B);
         int red = getColorById(R.color.redEB);
         int green = getColorById(R.color.green4C);
-        int highlightColor = getColorById(R.color.brown);
+        int highlightColor = getColorById(R.color.black0B);
         float highlightWidth = 0.5F;//高亮线的线宽
         float sp8 = sp2px(8);
         //K线
         cc.setNoDataTextColor(gray);//无数据时提示文字的颜色
         cc.setDescription(null);//取消描述
-        cc.getLegend().setEnabled(false);//取消图例
+        cc.getLegend().setEnabled(true);//取消图例
+        cc.getLegend().setDirection(Legend.LegendDirection.LEFT_TO_RIGHT);
+        cc.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        cc.getLegend().setForm(Legend.LegendForm.CIRCLE);
+
+
         cc.setDragDecelerationEnabled(false);//不允许甩动惯性滑动  和moveView方法有冲突 设置为false
         cc.setMinOffset(0);//设置外边缘偏移量
         cc.setExtraBottomOffset(6);//设置底部外边缘偏移量 便于显示X轴
@@ -208,7 +215,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         yac.setTextColor(gray);
         yac.setTextSize(8);
         yac.setLabelCount(5, true);
-        yac.enableGridDashedLine(5, 4, 0);//横向网格线设置为虚线
+//        yac.enableGridDashedLine(0, 0, 0);//横向网格线设置为虚线
+        yac.setDrawGridLines(false);
         yac.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {//只显示部分标签
@@ -220,30 +228,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cc.getAxisRight().setEnabled(false);
 
         //蜡烛图
-        candleSet = new CandleDataSet(new ArrayList<CandleEntry>(), "Kline");
-        candleSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-        candleSet.setDrawHorizontalHighlightIndicator(false);
-        candleSet.setHighlightLineWidth(highlightWidth);
-        candleSet.setHighLightColor(highlightColor);
-        candleSet.setShadowWidth(0.7f);
-        candleSet.setIncreasingColor(red);//上涨为红色
-        candleSet.setIncreasingPaintStyle(Paint.Style.FILL);
-        candleSet.setDecreasingColor(green);//下跌为绿色
-        candleSet.setDecreasingPaintStyle(Paint.Style.STROKE);
-        candleSet.setNeutralColor(red);
-        candleSet.setShadowColorSameAsCandle(true);
-        candleSet.setDrawValues(false);
-        candleSet.setHighlightEnabled(false);
+//        candleSet = new CandleDataSet(new ArrayList<CandleEntry>(), "Kline");
+//        candleSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+//        candleSet.setDrawHorizontalHighlightIndicator(false);
+//        candleSet.setHighlightLineWidth(highlightWidth);
+//        candleSet.setHighLightColor(highlightColor);
+//        candleSet.setShadowWidth(0.7f);
+//        candleSet.setIncreasingColor(red);//上涨为红色
+//        candleSet.setIncreasingPaintStyle(Paint.Style.FILL);
+//        candleSet.setDecreasingColor(green);//下跌为绿色
+//        candleSet.setDecreasingPaintStyle(Paint.Style.STROKE);
+//        candleSet.setNeutralColor(red);
+//        candleSet.setShadowColorSameAsCandle(true);
+//        candleSet.setDrawValues(false);
+//        candleSet.setHighlightEnabled(false);
         //均线
-        lineSet5 = new LineDataSet(new ArrayList<Entry>(), "MA5");
+        lineSet5 = new LineDataSet(new ArrayList<Entry>(), "直男策略收益");
         lineSet5.setAxisDependency(YAxis.AxisDependency.LEFT);
-        lineSet5.setColor(getColorById(R.color.purple));
-        lineSet5.setDrawCircles(false);
+        lineSet5.setColor(getColorById(R.color.yellow_FFFE4C4C));
+        lineSet5.setDrawCircles(true);
         lineSet5.setDrawValues(false);
-        lineSet5.setHighlightEnabled(false);
-        lineSet10 = new LineDataSet(new ArrayList<Entry>(), "MA10");
+        lineSet5.setHighlightEnabled(true);
+
+        // 是否绘制圆点
+//        lineSet5.setDrawCircles(true);
+
+
+
+        lineSet10 = new LineDataSet(new ArrayList<Entry>(), "沪深300");
         lineSet10.setAxisDependency(YAxis.AxisDependency.LEFT);
-        lineSet10.setColor(getColorById(R.color.yellow));
+        lineSet10.setColor(getColorById(R.color.yellow_24162641));
         lineSet10.setDrawCircles(false);
         lineSet10.setDrawValues(false);
         lineSet10.setHighlightEnabled(false);
@@ -259,38 +273,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lineSetMin.setFillAlpha(60);
 
 
-        //成交量
-        bc.setNoDataTextColor(gray);
-        bc.setDescription(null);
-        bc.getLegend().setEnabled(false);
-        bc.setDragDecelerationEnabled(false);//不允许甩动惯性滑动
-        bc.setMinOffset(0);//设置外边缘偏移量
-
-        bc.setScaleEnabled(false);//不可缩放
-        bc.setAutoScaleMinMaxEnabled(true);//自适应最大最小值
-        //自定义Y轴标签位置
-        bc.setRendererLeftYAxis(new InBoundYAxisRenderer(bc.getViewPortHandler(), bc.getAxisLeft(),
-                bc.getTransformer(YAxis.AxisDependency.LEFT)));
-        //设置渲染器控制颜色、偏移，以及高亮
-        bc.setRenderer(new OffsetBarRenderer(bc, bc.getAnimator(), bc.getViewPortHandler(), barOffset)
-                .setHighlightWidthSize(highlightWidth, sp8));
-
-        bc.getXAxis().setEnabled(false);
-        YAxis yab = bc.getAxisLeft();
-        yab.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);//标签显示在内侧
-        yab.setDrawAxisLine(false);
-        yab.setGridColor(black);
-        yab.setTextColor(gray);
-        yab.setTextSize(8);
-        yab.setLabelCount(2, true);
-        yab.setAxisMinimum(0);
-        yab.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return value == 0 ? "" : value + "";
-            }
-        });
-        bc.getAxisRight().setEnabled(false);
+//        //成交量
+//        bc.setNoDataTextColor(gray);
+//        bc.setDescription(null);
+//        bc.getLegend().setEnabled(false);
+//        bc.setDragDecelerationEnabled(false);//不允许甩动惯性滑动
+//        bc.setMinOffset(0);//设置外边缘偏移量
+//
+//        bc.setScaleEnabled(false);//不可缩放
+//        bc.setAutoScaleMinMaxEnabled(true);//自适应最大最小值
+//        //自定义Y轴标签位置
+//        bc.setRendererLeftYAxis(new InBoundYAxisRenderer(bc.getViewPortHandler(), bc.getAxisLeft(),
+//                bc.getTransformer(YAxis.AxisDependency.LEFT)));
+//        //设置渲染器控制颜色、偏移，以及高亮
+//        bc.setRenderer(new OffsetBarRenderer(bc, bc.getAnimator(), bc.getViewPortHandler(), barOffset)
+//                .setHighlightWidthSize(highlightWidth, sp8));
+//
+//        bc.getXAxis().setEnabled(false);
+//        YAxis yab = bc.getAxisLeft();
+//        yab.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);//标签显示在内侧
+//        yab.setDrawAxisLine(false);
+//        yab.setGridColor(black);
+//        yab.setTextColor(gray);
+//        yab.setTextSize(8);
+//        yab.setLabelCount(2, true);
+//        yab.setAxisMinimum(0);
+//        yab.setValueFormatter(new IAxisValueFormatter() {
+//            @Override
+//            public String getFormattedValue(float value, AxisBase axis) {
+//                return value == 0 ? "" : value + "";
+//            }
+//        });
+//        bc.getAxisRight().setEnabled(false);
 
         barSet = new BarDataSet(new ArrayList<BarEntry>(), "VOL");
         barSet.setHighLightColor(highlightColor);
@@ -298,25 +312,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         barSet.setDrawValues(false);
         barSet.setHighlightEnabled(false);
 
-        ccGesture = new CoupleChartGestureListener(this, cc, bc) {//设置成全局变量，后续要用到
-            @Override
-            public void chartDoubleTapped(MotionEvent me) {
-                doubleTapped();
-            }
-        };
-        cc.setOnChartGestureListener(ccGesture);//设置手势联动监听
-        bcGesture = new CoupleChartGestureListener(this, bc, cc) {
-            @Override
-            public void chartDoubleTapped(MotionEvent me) {
-                doubleTapped();
-            }
-        };
-        bc.setOnChartGestureListener(bcGesture);
+//        ccGesture = new CoupleChartGestureListener(this, cc, bc) {//设置成全局变量，后续要用到
+//            @Override
+//            public void chartDoubleTapped(MotionEvent me) {
+//                doubleTapped();
+//            }
+//        };
+//        cc.setOnChartGestureListener(ccGesture);//设置手势联动监听
+//        bcGesture = new CoupleChartGestureListener(this, bc, cc) {
+//            @Override
+//            public void chartDoubleTapped(MotionEvent me) {
+//                doubleTapped();
+//            }
+//        };
+//        bc.setOnChartGestureListener(bcGesture);
 
-        cc.setOnChartValueSelectedListener(new CoupleChartValueSelectedListener(this, cc, bc));//设置高亮联动监听
-        bc.setOnChartValueSelectedListener(new CoupleChartValueSelectedListener(this, bc, cc));
+//        cc.setOnChartValueSelectedListener(new CoupleChartValueSelectedListener(this, cc, bc));//设置高亮联动监听
+//        bc.setOnChartValueSelectedListener(new CoupleChartValueSelectedListener(this, bc, cc));
         cc.setOnTouchListener(new ChartFingerTouchListener(cc, this));//手指长按滑动高亮
-        bc.setOnTouchListener(new ChartFingerTouchListener(bc, this));
+//        bc.setOnTouchListener(new ChartFingerTouchListener(bc, this));
     }
 
     /**
@@ -346,8 +360,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         cc.setNoDataText("加载中...");
         cc.clear();
-        bc.setNoDataText("加载中...");
-        bc.clear();
+//        bc.setNoDataText("加载中...");
+//        bc.clear();
     }
 
     private void getData(String time) {
@@ -409,13 +423,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //如果设置了惯性甩动 move方法将会无效
             if (!toLeft && size > 0) {
                 cc.moveViewToAnimated(x, 0, YAxis.AxisDependency.LEFT, 200);
-                bc.moveViewToAnimated(x + barOffset, 0, YAxis.AxisDependency.LEFT, 200);
+//                bc.moveViewToAnimated(x + barOffset, 0, YAxis.AxisDependency.LEFT, 200);
             } else {
                 cc.moveViewToX(x);
-                bc.moveViewToX(x + barOffset);
+//                bc.moveViewToX(x + barOffset);
             }
             cc.notifyDataSetChanged();
-            bc.notifyDataSetChanged();
+//            bc.notifyDataSetChanged();
         }
     }
 
@@ -423,15 +437,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (dataList.size() == 0) {
             cc.setNoDataText("暂无相关数据");
             cc.clear();
-            bc.setNoDataText("暂无相关数据");
-            bc.clear();
+//            bc.setNoDataText("暂无相关数据");
+//            bc.clear();
         } else {
             if (combinedData == null) {
                 combinedData = new CombinedData();
             }
             xValues.clear();
-            List<CandleEntry> candleValues = candleSet.getValues();
-            candleValues.clear();
+//            List<CandleEntry> candleValues = candleSet.getValues();
+//            candleValues.clear();
             List<Entry> ma5Values = lineSet5.getValues();
             ma5Values.clear();
             List<Entry> ma10Values = lineSet10.getValues();
@@ -451,8 +465,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     xValues.put(i, x);
                     float open = Float.parseFloat(k.get(4));
                     float close = Float.parseFloat(k.get(1));
-                    candleValues.add(new CandleEntry(i, Float.parseFloat(k.get(2)),
-                            Float.parseFloat(k.get(3)), open, close, x));
+//                    candleValues.add(new CandleEntry(i, Float.parseFloat(k.get(2)),
+//                            Float.parseFloat(k.get(3)), open, close, x));
                     minValues.add(new Entry(i, close, x));
                     barValues.add(new BarEntry(i, Float.parseFloat(k.get(8)), close >= open ? 0 : 1));
                     if (i >=4) {
@@ -463,15 +477,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
             }
-            candleSet.setValues(candleValues);
+//            candleSet.setValues(candleValues);
             lineSet5.setValues(ma5Values);
             lineSet10.setValues(ma10Values);
             lineSetMin.setValues(minValues);
-            if (tabLayout.getSelectedTabPosition() == 0) {
-                combinedData.removeDataSet(candleSet);//分时图时移除蜡烛图
+            if (false) {
+//                combinedData.removeDataSet(candleSet);//分时图时移除蜡烛图
                 combinedData.setData(new LineData(lineSetMin));
             } else {
-                combinedData.setData(new CandleData(candleSet));
+//                combinedData.setData(new CandleData(candleSet));
                 combinedData.setData(new LineData(lineSet5, lineSet10));
             }
 
@@ -481,12 +495,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             barSet.setValues(barValues);
             BarData barData = new BarData(barSet);
-            barData.setBarWidth(1 - candleSet.getBarSpace() * 2);//使Candle和Bar宽度一致
-            bc.setData(barData);
-            bc.getXAxis().setAxisMaximum(xMax + barOffset);//保持边缘对齐
+//            barData.setBarWidth(1 - candleSet.getBarSpace() * 2);//使Candle和Bar宽度一致
+//            bc.setData(barData);
+//            bc.getXAxis().setAxisMaximum(xMax + barOffset);//保持边缘对齐
 
             cc.setVisibleXRange(range, range);//设置显示X轴个数的上下限，竖屏固定52个
-            bc.setVisibleXRange(range, range);
+//            bc.setVisibleXRange(range, range);
         }
     }
 
@@ -501,8 +515,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dismissLoading();
         cc.setNoDataText("加载失败 点击标签重试");
         cc.invalidate();
-        bc.setNoDataText("加载失败");
-        bc.invalidate();
+//        bc.setNoDataText("加载失败");
+//        bc.invalidate();
     }
 
     private float getMA(int index, int maxCount) {
@@ -521,9 +535,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_klBack://后退键
-                onBackPressed();
-                break;
+//            case R.id.iv_klBack://后退键
+//                onBackPressed();
+//                break;
             case R.id.iv_klOrientation://切换横竖屏
                 highVisX = cc.getHighestVisibleX();
                 setRequestedOrientation(isPort() ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE :
@@ -546,7 +560,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             try {
                 long t = sdf.parse(time).getTime();
                 if (!left) {//向右获取数据时判断时间间隔
-                    long interval = KL_INTERVAL[tabLayout.getSelectedTabPosition()] * M1;
+                    long interval = KL_INTERVAL[1] * M1;
                     if (System.currentTimeMillis() - t < interval) {//不会有新数据
                         return;
                     }
@@ -574,46 +588,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void valueSelected(Entry e) {
         float x = e.getX();
-        clHl.setVisibility(View.VISIBLE);
-        CandleEntry candle = candleSet.getEntryForXValue(x, 0);
-        if (candle != null) {
-            tvOpen.setText(format4p.format(candle.getOpen()));
-            tvOpen.setSelected(candle.getOpen() < candle.getClose());
-            tvClose.setText(format4p.format(candle.getClose()));
-            tvClose.setSelected(candle.getOpen() >= candle.getClose());
-
-            tvHigh.setText(format4p.format(candle.getHigh()));
-            tvHigh.setSelected(false);
-            tvLow.setText(format4p.format(candle.getLow()));
-            tvLow.setSelected(true);
-        }
+//        clHl.setVisibility(View.VISIBLE);
+//        CandleEntry candle = candleSet.getEntryForXValue(x, 0);
+//        if (candle != null) {
+//            tvOpen.setText(format4p.format(candle.getOpen()));
+//            tvOpen.setSelected(candle.getOpen() < candle.getClose());
+//            tvClose.setText(format4p.format(candle.getClose()));
+//            tvClose.setSelected(candle.getOpen() >= candle.getClose());
+//
+//            tvHigh.setText(format4p.format(candle.getHigh()));
+//            tvHigh.setSelected(false);
+//            tvLow.setText(format4p.format(candle.getLow()));
+//            tvLow.setSelected(true);
+//        }
         BarEntry bar = barSet.getEntryForXValue(x, 0);
         if (bar != null) {
-            tvVol.setText(format4p.format(bar.getY()));
+//            tvVol.setText(format4p.format(bar.getY()));
         }
 
-        if (tabLayout.getSelectedTabPosition() != 0) {
-            Entry line5 = lineSet5.getEntryForXValue(x, 0);
-            Entry line10 = lineSet10.getEntryForXValue(x, 0);
-            if (line5 != null && line10 != null) {
-                tvLine.setVisibility(View.VISIBLE);
-                String line = String.format(Kline5_10, format4p.format(line5.getY()),
-                        format4p.format(line10.getY()));
-                tvLine.setText(fromHtml(line));
-            }
-        }
+//        if (tabLayout.getSelectedTabPosition() != 0) {
+//            Entry line5 = lineSet5.getEntryForXValue(x, 0);
+//            Entry line10 = lineSet10.getEntryForXValue(x, 0);
+//            if (line5 != null && line10 != null) {
+//                tvLine.setVisibility(View.VISIBLE);
+//                String line = String.format(Kline5_10, format4p.format(line5.getY()),
+//                        format4p.format(line10.getY()));
+//                tvLine.setText(fromHtml(line));
+//            }
+//        }
     }
 
     @Override
     public void nothingSelected() {
-        clHl.setVisibility(View.GONE);
-        tvLine.setVisibility(View.GONE);
+//        clHl.setVisibility(View.GONE);
+//        tvLine.setVisibility(View.GONE);
     }
 
     @Override
     public void enableHighlight() {
         if (!barSet.isHighlightEnabled()) {
-            candleSet.setHighlightEnabled(true);
+//            candleSet.setHighlightEnabled(true);
             lineSetMin.setHighlightEnabled(true);
             barSet.setHighlightEnabled(true);
         }
@@ -622,7 +636,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void disableHighlight() {
         if (barSet.isHighlightEnabled()) {
-            candleSet.setHighlightEnabled(false);
+//            candleSet.setHighlightEnabled(false);
             lineSetMin.setHighlightEnabled(false);
             barSet.setHighlightEnabled(false);
             if (ccGesture != null) {
@@ -669,9 +683,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void run() {
                     float x = highVisX - range;
                     cc.moveViewToX(x);
-                    bc.moveViewToX(x + barOffset);
+//                    bc.moveViewToX(x + barOffset);
                     cc.notifyDataSetChanged();
-                    bc.notifyDataSetChanged();
+//                    bc.notifyDataSetChanged();
                 }
             });
         }

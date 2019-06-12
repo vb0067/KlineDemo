@@ -5,6 +5,7 @@ import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.CombinedChart.DrawOrder;
 import com.github.mikephil.charting.renderer.BarChartRenderer;
 import com.github.mikephil.charting.renderer.BubbleChartRenderer;
+import com.github.mikephil.charting.renderer.CandleStickChartRenderer;
 import com.github.mikephil.charting.renderer.CombinedChartRenderer;
 import com.github.mikephil.charting.renderer.ScatterChartRenderer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -46,8 +47,7 @@ public class HighlightCombinedRenderer extends CombinedChartRenderer {
                     break;
                 case CANDLE:
                     if (chart.getCandleData() != null)
-                        mRenderers.add(new HighlightCandleRenderer(chart, mAnimator, mViewPortHandler)
-                                .setHighlightSize(highlightSize));
+                        mRenderers.add(new CandleStickChartRenderer(chart, mAnimator, mViewPortHandler));
                     break;
                 case SCATTER:
                     if (chart.getScatterData() != null)
